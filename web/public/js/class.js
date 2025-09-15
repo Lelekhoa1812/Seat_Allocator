@@ -29,7 +29,7 @@ const API = {
 	classes: {
 		get: (id) => apiFetch(`/api/classes/${id}`,{headers:authHeader()}),
 		update: (id, payload) => apiFetch(`/api/classes/${id}`,{method:'PUT',headers:{...authHeader(),'Content-Type':'application/json'},body:JSON.stringify(payload)}),
-		allocate: (id) => apiFetch(`/api/classes/${id}/allocate`,{method:'POST', headers:authHeader()})
+		allocate: (id, opts) => apiFetch(`/api/classes/${id}/allocate`,{method:'POST', headers:{...authHeader(),'Content-Type':'application/json'}, body: JSON.stringify(opts||{})})
 	}
 };
 window.API = API;
@@ -128,7 +128,9 @@ addTableBtn?.addEventListener('click', async ()=>{
 
 
 allocateBtn?.addEventListener('click', async ()=>{
-	const res = await API.classes.allocate(currentClass._id);
+	// ensure backend has latest students selection before allocate
+	await API.classes.update(currentClass._id, { name: currentClass.name, students: currentClass.students.map(s=>s._id), tables: currentClass.tables });
+	const res = await API.classes.allocate(currentClass._id, { strategy: 'spread_groups', frontWeight: 1 });
 	if (!res || !res.tables){ alert('Allocation failed'); return; }
 	applyAllocation(res.tables);
 });

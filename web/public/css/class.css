@@ -31,3 +31,6 @@
 .nav a.active:after{transform:scaleX(1)}
 /* layout spacing */
 .layout{margin-top:10px}
+.table .head strong{font-size:.9rem}
+.table .head .btn-min{font-size:.8rem;padding:6px 8px}
+.seat .tag{font-size:.7rem}
