@@ -4,13 +4,6 @@ A simple classroom seat allocation tool for teachers. Manage students and friend
 
 [Live Demo](https://student-allocator.vercel.app)
 
-## Core features
-- Authentication: email + password (JWT).
-- Students: quick add/edit with optional external ID.
-- Friend groups: keep selected students together as a group.
-- Classrooms: create tables (rows/cols, 1–3 seats each), drag to reorder.
-- One‑click allocation: assigns students to available seats with sensible priorities.
-- Clean dark UI with subtle animations.
 
 ## Allocation algorithm
 1. Normalize tables and sort by grid position (row, then col). Initialize each with an empty `assigned` list.
