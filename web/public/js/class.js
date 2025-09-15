@@ -64,7 +64,7 @@ function renderLayout(){
 		el.draggable=true;
 		el.dataset.tid = t._id;
 		el.innerHTML = `<div class="head">
-		<strong>Table ${t.row+1}-${t.col+1}</strong>
+		<strong>Table ${t.row}-${t.col}</strong>
 		<div class="row gap">
 			<button class="btn-min" data-change="${t._id}">Seats: ${t.seats}</button>
 			<button class="icon-btn" title="Delete table" data-del="${t._id}">${binSvg()}</button>
@@ -131,10 +131,9 @@ const tSeats = document.getElementById('tSeats');
 const cancelTable = document.getElementById('cancelTable');
 
 addTableBtn?.addEventListener('click', ()=>{
-	// set sensible defaults
 	const last = (currentClass.tables||[]).slice(-1)[0];
-	tRow.value = String(last ? last.row : 0);
-	tCol.value = String(last ? (last.col+1) : 0);
+	tRow.value = String(last ? last.row : 1);
+	tCol.value = String(last ? (last.col+1) : 1);
 	tSeats.value = String(2);
 	tableModal.classList.remove('hidden');
 });
@@ -143,8 +142,8 @@ cancelTable?.addEventListener('click', ()=> tableModal.classList.add('hidden'));
 
 tableForm?.addEventListener('submit', async (e)=>{
 	e.preventDefault();
-	const row = Math.max(0, parseInt(tRow.value||'0'))|0;
-	const col = Math.max(0, parseInt(tCol.value||'0'))|0;
+	const row = Math.max(1, parseInt(tRow.value||'1'))|0;
+	const col = Math.max(1, parseInt(tCol.value||'1'))|0;
 	const seats = Math.min(3, Math.max(1, parseInt(tSeats.value||'2')))|0;
 	currentClass.tables.push({ row, col, seats });
 	await API.classes.update(currentClass._id, { name: currentClass.name, students: currentClass.students.map(s=>s._id), tables: currentClass.tables });

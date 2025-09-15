@@ -263,3 +263,15 @@ init();
 		btn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
 	});
 })();
+
+// password eye toggle for register
+(function(){
+	const btn = document.getElementById('togglePwdReg');
+	const input = document.getElementById('rPassword');
+	if (!btn || !input) return;
+	btn.addEventListener('click', ()=>{
+		const isPwd = input.getAttribute('type') === 'password';
+		input.setAttribute('type', isPwd ? 'text' : 'password');
+		btn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
+	});
+})();
