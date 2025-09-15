@@ -251,3 +251,15 @@ init();
 (function(){
 	const _loginSubmit = (formHandler)=>formHandler;
 })();
+
+// password eye toggle
+(function(){
+	const btn = document.getElementById('togglePwd');
+	const input = document.getElementById('password');
+	if (!btn || !input) return;
+	btn.addEventListener('click', ()=>{
+		const isPwd = input.getAttribute('type') === 'password';
+		input.setAttribute('type', isPwd ? 'text' : 'password');
+		btn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
+	});
+})();

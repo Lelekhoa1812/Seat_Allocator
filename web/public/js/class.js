@@ -55,6 +55,7 @@ let currentClass = null;
 let allStudents = [];
 
 
+// override renderLayout to include delete icon
 function renderLayout(){
 	layoutEl.innerHTML='';
 	(currentClass.tables||[]).sort((a,b)=>a.row-b.row||a.col-b.col).forEach(t=>{
@@ -64,29 +65,34 @@ function renderLayout(){
 		el.dataset.tid = t._id;
 		el.innerHTML = `<div class="head">
 		<strong>Table ${t.row+1}-${t.col+1}</strong>
-		<button class="btn-min" data-change="${t._id}">Seats: ${t.seats}</button>
+		<div class="row gap">
+			<button class="btn-min" data-change="${t._id}">Seats: ${t.seats}</button>
+			<button class="icon-btn" title="Delete table" data-del="${t._id}">${binSvg()}</button>
+		</div>
 		</div>
 		<div class="seats">${Array.from({length:t.seats}).map((_,i)=>`<div class="seat"><span class="tag">${i+1}</span></div>`).join('')}</div>`;
 
-
 		el.querySelector('[data-change]')?.addEventListener('click', async ()=>{
-			const newSeats = ((t.seats % 3)+1); // 1→2→3→1
+			const newSeats = ((t.seats % 3)+1);
 			t.seats = newSeats;
 			await API.classes.update(currentClass._id, { name: currentClass.name, students: currentClass.students.map(s=>s._id), tables: currentClass.tables });
 			renderLayout();
 		});
 
-
-		el.addEventListener('dragstart', e=>{
-			e.dataTransfer.setData('text/plain', t._id);
+		el.querySelector('[data-del]')?.addEventListener('click', async ()=>{
+			if (!confirm('Delete this table?')) return;
+			currentClass.tables = currentClass.tables.filter(x=>x._id!==t._id);
+			await API.classes.update(currentClass._id, { name: currentClass.name, students: currentClass.students.map(s=>s._id), tables: currentClass.tables });
+			renderLayout();
 		});
+
+		el.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', t._id); });
 		el.addEventListener('dragover', e=> e.preventDefault());
 		el.addEventListener('drop', async (e)=>{
 			e.preventDefault();
 			const fromId = e.dataTransfer.getData('text/plain');
 			const toId = t._id;
 			if (fromId===toId) return;
-			// swap row/col
 			const A = currentClass.tables.find(x=>x._id===fromId);
 			const B = currentClass.tables.find(x=>x._id===toId);
 			[A.row, B.row] = [B.row, A.row];
@@ -94,7 +100,6 @@ function renderLayout(){
 			await API.classes.update(currentClass._id, { name: currentClass.name, students: currentClass.students.map(s=>s._id), tables: currentClass.tables });
 			renderLayout();
 		});
-
 
 		layoutEl.appendChild(el);
 	});
@@ -117,13 +122,34 @@ availableStudents.innerHTML='';
 }
 
 
-addTableBtn?.addEventListener('click', async ()=>{
-	const row = parseInt(prompt('Row index (0-based)?', String(currentClass.tables.length? currentClass.tables.at(-1).row : 0)))||0;
-	const col = parseInt(prompt('Col index (0-based)?', '0'))||0;
-	const seats = Math.min(3, Math.max(1, parseInt(prompt('Seats (1–3)?','2')||'2')));
+// Modal-based table creation
+const tableModal = document.getElementById('tableModal');
+const tableForm = document.getElementById('tableForm');
+const tRow = document.getElementById('tRow');
+const tCol = document.getElementById('tCol');
+const tSeats = document.getElementById('tSeats');
+const cancelTable = document.getElementById('cancelTable');
+
+addTableBtn?.addEventListener('click', ()=>{
+	// set sensible defaults
+	const last = (currentClass.tables||[]).slice(-1)[0];
+	tRow.value = String(last ? last.row : 0);
+	tCol.value = String(last ? (last.col+1) : 0);
+	tSeats.value = String(2);
+	tableModal.classList.remove('hidden');
+});
+
+cancelTable?.addEventListener('click', ()=> tableModal.classList.add('hidden'));
+
+tableForm?.addEventListener('submit', async (e)=>{
+	e.preventDefault();
+	const row = Math.max(0, parseInt(tRow.value||'0'))|0;
+	const col = Math.max(0, parseInt(tCol.value||'0'))|0;
+	const seats = Math.min(3, Math.max(1, parseInt(tSeats.value||'2')))|0;
 	currentClass.tables.push({ row, col, seats });
 	await API.classes.update(currentClass._id, { name: currentClass.name, students: currentClass.students.map(s=>s._id), tables: currentClass.tables });
-	await reload();
+	tableModal.classList.add('hidden');
+	renderLayout();
 });
 
 
@@ -247,3 +273,6 @@ reload();
 		if (href === '/students' && path.startsWith('/students')) a.classList.add('active');
 	});
 })();
+
+// Add bin icon svg helper
+function binSvg(){return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3h6m-9 4h12m-1 0-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 7m3 4v7m6-7v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'}

@@ -37,7 +37,10 @@
                             <input type="email" id="email" placeholder="you@school.edu" required />
                         </label>
                         <label>Password
-                            <input type="password" id="password" placeholder="••••••••" required />
+                            <span class="input-adorn">
+                                <input type="password" id="password" placeholder="••••••••" required />
+                                <button type="button" id="togglePwd" class="eye-btn" aria-label="Show password">👁️</button>
+                            </span>
                         </label>
                         <button type="submit">Sign in</button>
                         <div class="row between center subtle"><span></span><a href="#">Forgot password?</a></div>

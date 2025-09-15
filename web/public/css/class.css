@@ -34,3 +34,11 @@
 .table .head strong{font-size:.9rem}
 .table .head .btn-min{font-size:.8rem;padding:6px 8px}
 .seat .tag{font-size:.5rem}
+
+/* modal for table creation */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center}
+.modal.hidden{display:none}
+.modal-content{background:var(--card);border:1px solid #2a2f42;border-radius:16px;padding:18px;min-width:320px;animation:raise .2s ease}
+/* delete icon button */
+.icon-btn{border:none;background:#151823;border:1px solid #2a2f42;color:#cbd5e1;border-radius:10px;padding:6px 8px;cursor:pointer}
+.icon-btn:hover{border-color:#3b82f6;color:#e2e8f0}
