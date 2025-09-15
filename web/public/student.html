@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Seat Allocation – Students & Groups</title>
+        <link rel="stylesheet" href="./css/student.css" />
+    </head>
+    <body>
+    <header class="appbar">
+        <div class="brand">Seat<span>Wizard</span></div>
+        <nav class="nav">
+        <a href="/" >Dashboard</a>
+        <a href="/class" id="classNav">Classrooms</a>
+        <a href="#" id="logoutBtn" class="danger">Logout</a>
+        </nav>
+    </header>
+
+
+    <main class="container two-col">
+        <section class="card">
+            <h2>Students</h2>
+            <form id="studentForm" class="form inline">
+            <input type="text" id="studentName" placeholder="Name" required />
+            <input type="text" id="studentExtId" placeholder="ID (optional)" />
+            <button type="submit">Add</button>
+            </form>
+            <ul id="studentList" class="list"></ul>
+        </section>
+
+
+        <section class="card">
+            <div class="row between center">
+            <h2>Friend Groups</h2>
+            <button id="newGroupBtn">+ New Group</button>
+            </div>
+            <div id="groupPanel"></div>
+        </section>
+    </main>
+
+
+    <div id="modal" class="modal hidden">
+    <div class="modal-content">
+    <h3>Create / Edit Group</h3>
+    <form id="groupForm" class="form">
+    <input type="text" id="groupName" placeholder="Group name" required />
+    <input type="text" id="groupTag" placeholder="Tag (optional)" />
+    <div id="memberChecks" class="checks"></div>
+    <div class="row end gap">
+    <button type="button" id="cancelModal" class="btn-min">Cancel</button>
+    <button type="submit" class="btn-min">Save</button>
+    </div>
+    </form>
+    </div>
+    </div>
+
+    <script type="module" src="./js/student.js"></script>
+    </body>
+</html>

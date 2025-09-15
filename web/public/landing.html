@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="api-base" content="">
+        <title>Seat Allocation – Dashboard / Login</title>
+        <link rel="stylesheet" href="./css/index.css" />
+    </head>
+    <body>
+        <header class="appbar">
+            <div class="brand">Seat<span>Wizard</span></div>
+            <nav class="nav">
+            <a href="./student.html" id="studentsNav">Students</a>
+            <a href="./class.html" id="classNav">Classrooms</a>
+            <a href="#" id="logoutBtn" class="danger">Logout</a>
+            </nav>
+        </header>
+
+
+        <main class="container">
+        <section id="authCard" class="card hidden">
+            <div class="auth-grid">
+                <div class="auth-side">
+                    <div class="eyebrow">Welcome back</div>
+                    <h2>Sign in to Seat<span>Wizard</span></h2>
+                    <p class="subtle">Manage classrooms, students, and groups. Allocate seats with fairness and ease.</p>
+                    <ul class="auth-benefits">
+                        <li>Secure teacher accounts</li>
+                        <li>Fast seat allocation</li>
+                        <li>Simple student grouping</li>
+                    </ul>
+                </div>
+                <div class="auth-form">
+                    <form id="loginForm" class="form">
+                        <label>Email
+                            <input type="email" id="email" placeholder="you@school.edu" required />
+                        </label>
+                        <label>Password
+                            <input type="password" id="password" placeholder="••••••••" required />
+                        </label>
+                        <button type="submit">Sign in</button>
+                        <div class="row between center subtle"><span></span><a href="#">Forgot password?</a></div>
+                    </form>
+                    <div class="divider"><span>or</span></div>
+                    <details class="mt auth-details">
+                        <summary>Create a new account</summary>
+                        <form id="registerForm" class="form">
+                            <label>Email
+                                <input type="email" id="rEmail" placeholder="you@school.edu" required />
+                            </label>
+                            <label>Password
+                                <input type="password" id="rPassword" placeholder="Minimum 8 characters" required />
+                            </label>
+                            <button type="submit">Create account</button>
+                        </form>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="dash" class="card hidden">
+            <div class="row between center">
+            <h2>Classrooms</h2>
+            <button id="newClassBtn">+ New Class</button>
+            </div>
+            <ul id="classList" class="grid"></ul>
+        </section>
+        </main>
+
+
+        <footer class="foot">© SeatWizard</footer>
+
+
+        <script type="module" src="./js/index.js"></script>
+    </body>
+</html>

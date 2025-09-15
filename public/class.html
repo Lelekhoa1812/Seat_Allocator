@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Seat Allocation – Classroom</title>
+        <link rel="stylesheet" href="./css/class.css" />
+    </head>
+    <body>
+        <header class="appbar">
+            <div class="brand">Seat<span>Wizard</span></div>
+            <nav class="nav">
+            <a href="./index.html">Dashboard</a>
+            <a href="./student.html">Students</a>
+            <a href="#" id="logoutBtn" class="danger">Logout</a>
+            </nav>
+        </header>
+
+
+        <main class="container two-col">
+        <section class="card">
+            <div class="row between center">
+            <h2 id="classTitle">Classroom</h2>
+            <div class="row gap">
+            <button id="addTableBtn">+ Table</button>
+            <button id="allocateBtn">Allocate Seats</button>
+            <button id="refreshBtn">Refresh</button>
+            </div>
+            </div>
+
+
+            <div class="subtle">Click a table to change seat count (1–3) or drag to reorder (row/col).</div>
+            <div id="layout" class="layout"></div>
+        </section>
+
+
+        <section class="card">
+            <h2>Assign Students to Class</h2>
+            <div class="subtle">Tick students to include in this classroom:</div>
+            <ul id="availableStudents" class="list"></ul>
+        </section>
+        </main>
+
+
+        <footer class="foot">© SeatWizard</footer>
+
+
+        <script type="module" src="./js/class.js"></script>
+    </body>
+</html>
