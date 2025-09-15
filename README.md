@@ -12,7 +12,7 @@ A simple classroom seat allocation tool for teachers. Manage students and friend
 - One‑click allocation: assigns students to available seats with sensible priorities.
 - Clean dark UI with subtle animations.
 
-## Allocation algorithm (configurable)
+## Allocation algorithm
 1. Normalize tables and sort by grid position (row, then col). Initialize each with an empty `assigned` list.
 2. Default strategy `spread_groups`:
    - Score each candidate table by remaining capacity (higher is better).
@@ -50,4 +50,13 @@ Notes
    - `cd web && npm install`
    - `npm run dev`
 3. Open `http://localhost:3000`.
+
+
+## Demo
+
+![Seat Allocation](./img/allocation.png)
+
+![Classroom Layout](./img/classroom.png)
+
+![Students & Groups](./img/student.png)
 
