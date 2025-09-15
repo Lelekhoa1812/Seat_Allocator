@@ -21,12 +21,6 @@ Notes
 - If `students.length > totalSeats`, the API responds `400 Not enough seats for all students`.
 
 
-### Alternatives
-- Strict round‑robin by table order: guarantees even distribution, weaker at avoiding local congestion late in the process.
-- Weighted tables: bias certain rows/cols (e.g., front rows) by adding a weight to “remaining seats.”
-- Separation constraints: add soft penalties (e.g., avoid placing same-group students on same table) by skipping candidate tables if any assigned member already sits there.
-- Randomized tie-breaking: introduces variety at the cost of determinism.
-
 ### Frontend behavior
 - Before allocation, the client syncs the latest selected students to the server to ensure deselected students are not assigned.
 - Seat rendering resets unassigned seats to their index label and marks assigned seats with the student name.
