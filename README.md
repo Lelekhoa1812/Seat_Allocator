@@ -12,16 +12,31 @@ A simple classroom seat allocation tool for teachers. Manage students and friend
 - One‑click allocation: assigns students to available seats with sensible priorities.
 - Clean dark UI with subtle animations.
 
-## Allocation algorithm (simple, fast, predictable)
-1. Sort tables by grid position (row, then col). Initialize each with an empty `assigned` list.
-2. Define a picker that always returns the table with the most remaining seats; ties break by row/col.
-3. Place grouped students first (by provided friend groups), one by one, using the picker.
-4. Place all remaining students using the same picker.
+## Allocation algorithm (configurable)
+1. Normalize tables and sort by grid position (row, then col). Initialize each with an empty `assigned` list.
+2. Default strategy `spread_groups`:
+   - Score each candidate table by remaining capacity (higher is better).
+   - Softly penalize assigning two members of the same friend group to the same table.
+   - Optional `frontWeight` adds a small bias for lower row indices (front of room).
+3. Alternative strategy `round_robin`:
+   - Traverse tables in order and fill the next available seat, cycling through tables.
+4. Place all students in a single pass using the chosen strategy and tie‑break by row/col.
 5. Return the final table list with `assigned` student IDs per seat index.
 
 Notes
-- The algorithm is greedy: favors balancing seat usage and keeps output stable across runs for the same inputs.
-- If students exceed total seats, it errors early (no partial allocations).
+- Greedy and deterministic given identical inputs and options.
+- If `students.length > totalSeats`, the API responds `400 Not enough seats for all students`.
+
+
+### Alternatives
+- Strict round‑robin by table order: guarantees even distribution, weaker at avoiding local congestion late in the process.
+- Weighted tables: bias certain rows/cols (e.g., front rows) by adding a weight to “remaining seats.”
+- Separation constraints: add soft penalties (e.g., avoid placing same-group students on same table) by skipping candidate tables if any assigned member already sits there.
+- Randomized tie-breaking: introduces variety at the cost of determinism.
+
+### Frontend behavior
+- Before allocation, the client syncs the latest selected students to the server to ensure deselected students are not assigned.
+- Seat rendering resets unassigned seats to their index label and marks assigned seats with the student name.
 
 ## Tech
 - API: Next.js API routes (MongoDB via Mongoose, JWT auth, bcryptjs).
@@ -36,16 +51,3 @@ Notes
    - `npm run dev`
 3. Open `http://localhost:3000`.
 
-
-## Allocation & sorting
-- Table order: sort by `row`, then `col` for stable traversal.
-- Seat picker: choose the table with the most remaining seats; tie‑break by row/col.
-- Placement order: place group members first (one by one), then remaining students, always using the same picker.
-- Determinism: fixed sorts + tie‑breaks ⇒ same inputs produce the same layout.
-- Complexity: O(S·T) for S students and T tables; fast for classroom sizes.
-
-## Alternatives
-- Strict round‑robin by table order: guarantees even distribution, weaker at avoiding local congestion late in the process.
-- Weighted tables: bias certain rows/cols (e.g., front rows) by adding a weight to “remaining seats.”
-- Separation constraints: add soft penalties (e.g., avoid placing same-group students on same table) by skipping candidate tables if any assigned member already sits there.
-- Randomized tie-breaking: introduces variety at the cost of determinism.
